@@ -1,4 +1,9 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Inversions {
     public static arrAttributes mergeSort(long[] arr) {
@@ -20,6 +25,7 @@ public class Inversions {
        // Recursion of left and right
        arrAttributes x = mergeSort(left);
        arrAttributes y = mergeSort(right);
+       
        left = x.arraySorted;
        right = y.arraySorted;
        
@@ -37,26 +43,53 @@ public class Inversions {
                numInv = numInv + (midL - i);
            }
        }
-       
        if (i == midL) {
            System.arraycopy(right, j, sortedArr, i+j, midR-j);
        } 
        if (j == midR) {
            System.arraycopy(left, i, sortedArr, i+j, midL-i);
        }
-       
        numInv = numInv + x.nInv + y.nInv;
        return new arrAttributes(numInv,sortedArr);
     }
     
-    public static void main(String args[]){
-        long[] a = {30,90,10,8,7};
+    // import file as long[] array
+    public static long[] fileToArray(File file) throws FileNotFoundException {
+        
+        Scanner scn = new Scanner(file);
+        List <Long> arrL = new ArrayList<>();
+        while(scn.hasNextLong()) {
+            Long line = scn.nextLong();
+            arrL.add(line);
+        }
+        scn.close();
+        Long[] arr = new Long[arrL.size()];
+        arr = arrL.toArray(arr);
+        
+        long[] arrlong = toPrimitives(arr);
+        return arrlong;
+     }
+    
+    // helper method to convert to primitive 
+    public static long[] toPrimitives(Long... objects) {
+        long[] primitives = new long[objects.length];
+        for (int i = 0; i < objects.length; i++){
+             primitives[i] = objects[i];
+            }
+        return primitives;
+    }
+    
+    public static void main(String args[]) throws FileNotFoundException{
+    	File f = new File("IntegerArray.txt");
+    	long[] a = fileToArray(f);
         arrAttributes ans = mergeSort(a);
-        System.out.println("Number of inversions: " + ans.nInv);
         System.out.println("Sorted Array: " + Arrays.toString(ans.arraySorted));
+        System.out.println("Number of inversions: " + ans.nInv);
+    	
     }
 }
 
+// helper class to store array and number of inversions
 class arrAttributes{
     public long nInv;
     public long[] arraySorted;
