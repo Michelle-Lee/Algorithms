@@ -1,2 +1,2 @@
 # Algorithms
-Implementation for several common algorithms.
+Implementation of several common algorithms.
